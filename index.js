@@ -35,7 +35,7 @@ async function run() {
 
 
 
-    app.post('https://backmang-server-fwmw5k38m-bandhandut19.vercel.app/users', async (req, res) => {
+    app.post('/users', async (req, res) => {
         try {
             const { userName, userEmail, userPassword } = req.body;
             const newUser = { userName, userEmail, userPassword };
@@ -47,7 +47,7 @@ async function run() {
         }
     });
 
-    app.get('https://backmang-server-fwmw5k38m-bandhandut19.vercel.app/users', async (req,res) =>{
+    app.get('/users', async (req,res) =>{
         const cursor = userCollection.find()
         const result = await cursor.toArray()
         res.send(result)
