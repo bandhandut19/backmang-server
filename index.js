@@ -33,11 +33,27 @@ async function run() {
 
     const userCollection = client.db('backmang').collection('user');
 
-    const doc = {
-        title: "Record of a Shriveled Datum",
-        content: "No bytes, no problem. Just insert a document, in MongoDB",
-      }
-      const testData = await userCollection.insertOne(doc)
+
+
+    app.post('/users', async (req, res) => {
+        try {
+            const { userName, userEmail, userPassword } = req.body;
+            const newUser = { userName, userEmail, userPassword };
+            const result =await userCollection.insertOne(newUser);
+            res.send(result)
+        } catch (error) {
+            console.error('Error inserting user data:', error);
+            res.status(500).json({ error: "Facing problem inserting user data" });
+        }
+    });
+
+    app.get('/users', async (req,res) =>{
+        const cursor = userCollection.find()
+        const result = await cursor.toArray()
+        res.send(result)
+    })
+
+
 
 
     // Send a ping to confirm a successful connection
@@ -45,7 +61,7 @@ async function run() {
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
-    await client.close();
+    // await client.close();
   }
 }
 run().catch(console.dir);
